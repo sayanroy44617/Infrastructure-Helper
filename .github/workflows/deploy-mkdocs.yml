@@ -21,8 +21,13 @@ jobs:
         run: |
           pip install mkdocs mkdocs-material
 
+      - name: Build MkDocs site
+        run: mkdocs build
+
       - name: Deploy to GitHub Pages
-        uses: squidfunk/mkdocs-material-github-pages-action@master
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          mkdocs_yml_file: mkdocs.yml
-          site_dir: site
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          publish_branch: gh-pages
+          force_orphan: true # Add this line
