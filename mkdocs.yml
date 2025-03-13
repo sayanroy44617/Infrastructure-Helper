@@ -1,0 +1,4 @@
+site_name: My LastTime Infra Notes
+nav: 
+  - Kubernetes: kubernetes/kubernetes.md
+  
