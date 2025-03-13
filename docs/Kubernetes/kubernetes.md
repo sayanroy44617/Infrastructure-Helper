@@ -1,1 +1,1 @@
-- hello 
+This is the kubernetes home page
