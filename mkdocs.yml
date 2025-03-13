@@ -1,4 +1,11 @@
-site_name: My LastTime Infra Notes
-nav: 
-  - Kubernetes: kubernetes/kubernetes.md
-  
+site_name: infra helper  # Your site's name
+site_url: https://sayanroy44617.github.io/Infrastructure-Helper/  # Add this!
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Advanced:
+    - Configuration: advanced/configuration.md
+    - Troubleshooting: advanced/troubleshooting.md
