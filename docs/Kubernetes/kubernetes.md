@@ -47,6 +47,8 @@ spec:
 ### 3.1 What is a ReplicaSet?
 A **ReplicaSet** ensures that a specified number of pod replicas are running at any given time.
 
+Replica set provides us a way to handle the situation whenever a pod in your node fails , using it we can make sure a new pod gets created whenever the pod is down , or suppose you want scaling then replica set gives us a way to add new
+
 ### 3.2 Scaling a ReplicaSet
 There are two ways to scale the number of replicas:
 ```sh
@@ -152,23 +154,28 @@ A **Deployment** is a higher-level abstraction that manages ReplicaSets and prov
 
 ### 4.1 Deployment YAML Example
 ```yaml
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1  # API version for Deployments	
+kind: Deployment  # Defines that this is a Deployment object
+
 metadata:
-  name: httpd-frontend
-spec:
-  replicas: 3
-  selector:
+  name: httpd-frontend  # Name of the Deployment (This is for Kubernetes reference)
+
+spec:  # Deployment specifications (This controls the Deployment behavior)
+  replicas: 3  # Number of pod replicas to maintain
+
+  selector:  # This is used by Deployment to manage Pods
     matchLabels:
-      app: httpd-frontend
-  template:
+      app: httpd-frontend  # This must match the labels in 'template.metadata.labels'
+
+  template:  # This defines the Pod specification (How the Pod should be created)
     metadata:
-      labels:
-        app: httpd-frontend
-    spec:
+      labels:  # Labels assigned to the Pods created by this Deployment
+        app: httpd-frontend  # This must match 'selector.matchLabels' above
+
+    spec:  # Pod specification (How the Pod should be structured)
       containers:
-        - name: httpd-container
-          image: httpd:2.4-alpine
+      - name: httpd-container  # Container name inside the Pod
+        image: httpd:2.4-alpine  # The container runs this Docker image
 ```
 
 ### 4.2 Deployment Commands
@@ -191,6 +198,10 @@ Kubernetes Services allow communication between different pods or expose them ou
 
 ### 5.1 Types of Services
 1. **NodePort** - Exposes a service on a static port on each node.
+    - There are 3 components in the nodeport:
+      - Targetport : the port where the pod runs inside the node
+      - port: the port of the nodeport //mandatory
+      - Nodeport: the port which will be exposed (30000 -> 32000) 
 2. **ClusterIP** - Internal communication within the cluster.
 3. **LoadBalancer** - Exposes service externally using a cloud provider’s load balancer.
 
@@ -209,6 +220,23 @@ spec:
   selector:
     app: my-app
     type: frontend
+```
+
+### 5.3 Service YAML Example(Cluster IP)
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+	name: backend
+spec:
+	type: ClusterIP
+    ports:
+    	- TargetPort: 80
+        - port : 80
+    selector:         // this is to select which nodes it'll target along
+    	app: my-app
+        type: backend
 ```
 
 ### 5.3 Get Service Details
